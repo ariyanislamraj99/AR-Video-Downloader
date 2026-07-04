@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "Glass Video & File Downloader",
+  "version": "1.1.0",
+  "description": "Detect and download videos and any file from any webpage with a modern glassmorphism interface. Multi-platform aware with quality selection and 1-click download.",
+  "minimum_chrome_version": "102",
+  "permissions": [
+    "activeTab",
+    "downloads",
+    "storage",
+    "contextMenus",
+    "scripting",
+    "webRequest",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Glass Video & File Downloader",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content-overlay.css"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/icons/*.png", "assets/images/*.svg", "lib/*.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
