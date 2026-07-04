@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glass Video Downloader — Settings & History</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <div class="shell">
+    <header class="hero">
+      <div class="hero__brand">
+        <div class="hero__logo" aria-hidden="true">TR</div>
+        <div>
+          <h1>AR Downloader</h1>
+          <p>Settings &amp; download history</p>
+        </div>
+      </div>
+      <nav class="tabs" role="tablist">
+        <button class="tab tab--active" data-tab="settings" role="tab">Settings</button>
+        <button class="tab" data-tab="history" role="tab">History</button>
+        <button class="tab" data-tab="about" role="tab">About</button>
+      </nav>
+    </header>
+
+    <main class="content">
+      <!-- Settings tab -->
+      <section id="tab-settings" class="panel panel--active">
+        <div class="card">
+          <h2 class="card__title">Preferences</h2>
+          <div class="field">
+            <label for="default-quality">Default quality preference</label>
+            <select id="default-quality" class="select">
+              <option value="best">Best available</option>
+              <option value="1080p">1080p</option>
+              <option value="720p">720p</option>
+              <option value="480p">480p</option>
+              <option value="360p">360p</option>
+            </select>
+            <p class="field__hint">Used when multiple qualities are available.</p>
+          </div>
+
+          <div class="field">
+            <label for="external-helper">External download helper URL</label>
+            <input id="external-helper" class="text" type="text" placeholder="https://example.com/?url=" />
+            <p class="field__hint">For platform-restricted videos (YouTube, TikTok, etc.), the extension opens this URL with the video URL appended. Use any service you trust.</p>
+          </div>
+
+          <div class="field">
+            <label for="extraction-endpoint">Extraction backend URL (optional)</label>
+            <input id="extraction-endpoint" class="text" type="text" placeholder="https://your-project.supabase.co/functions/v1/extract-video" />
+            <p class="field__hint">Optional: a Supabase Edge Function (or any server running yt-dlp) that accepts <code>{ url, quality }</code> POST and returns <code>{ formats: [{url, quality, ext}], title }</code>. When set, platform videos are extracted in-popup. When empty, the helper URL is used instead.</p>
+          </div>
+
+          <div class="field field--row">
+            <div>
+              <label for="auto-detect">Auto-detect videos</label>
+              <p class="field__hint">Show a floating badge on pages with videos.</p>
+            </div>
+            <label class="switch">
+              <input id="auto-detect" type="checkbox" />
+              <span class="switch__track"></span>
+            </label>
+          </div>
+
+          <div class="field field--row">
+            <div>
+              <label for="save-history">Save download history</label>
+              <p class="field__hint">Store recent downloads locally on this device.</p>
+            </div>
+            <label class="switch">
+              <input id="save-history" type="checkbox" />
+              <span class="switch__track"></span>
+            </label>
+          </div>
+
+          <div class="field">
+            <label for="max-history">Max history entries</label>
+            <input id="max-history" class="text" type="number" min="10" max="500" step="10" />
+          </div>
+
+          <div class="field">
+            <label>Theme</label>
+            <div class="theme-grid">
+              <button class="theme-chip" data-theme="aurora" aria-pressed="true">
+                <span class="theme-swatch theme-swatch--aurora"></span>Aurora
+              </button>
+              <button class="theme-chip" data-theme="ocean">
+                <span class="theme-swatch theme-swatch--ocean"></span>Ocean
+              </button>
+              <button class="theme-chip" data-theme="sunset">
+                <span class="theme-swatch theme-swatch--sunset"></span>Sunset
+              </button>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="save-btn" class="btn btn--primary">Save settings</button>
+            <span id="save-status" class="save-status"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- History tab -->
+      <section id="tab-history" class="panel">
+        <div class="card">
+          <div class="card__head">
+            <h2 class="card__title">Recent downloads</h2>
+            <button id="clear-history" class="btn btn--ghost btn--sm">Clear all</button>
+          </div>
+          <div id="history-list" class="history-list">
+            <div class="skeleton-list">
+              <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About tab -->
+      <section id="tab-about" class="panel">
+        <div class="card">
+          <h2 class="card__title">About</h2>
+          <p class="about__p">Glass Video Downloader detects and downloads <strong>direct video sources</strong> (MP4, WebM, MKV, MOV, OGG) and HLS/DASH playlists (M3U8/MPD) from any webpage using DOM inspection and network request monitoring.</p>
+          <p class="about__p">For platforms that use encryption or signature ciphers (YouTube, TikTok, Instagram, Facebook, Twitter), in-browser extraction is not technically possible without a server. The extension hands those off to your configured external helper.</p>
+          <p class="about__p">HLS/DASH streams are surfaced as playlist URLs — copy them into a tool like yt-dlp, VLC, or ffmpeg to capture the full video, since Chrome's download API cannot merge segmented streams.</p>
+          <ul class="about__list">
+            <li>Manifest V3 service worker</li>
+            <li>Glassmorphism UI with animated gradient background</li>
+            <li>Context menu integration</li>
+            <li>Floating badge on detected video pages</li>
+            <li>Local + sync storage for history &amp; settings</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="credit-footer">
+      <span>Powered By: <span class="credit-footer__name">AriyaN Islam Raj</span></span>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="lib/gradient-animator.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
