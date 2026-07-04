@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glass Video &amp; File Downloader</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <div class="app">
+    <header class="app__header">
+      <div class="app__brand">
+        <div class="app__logo" aria-hidden="true">TR</div>
+        <div class="app__title">
+          <h1>AR Downloader</h1>
+          <span id="status" class="app__status">Scanning page…</span>
+        </div>
+      </div>
+      <button id="options-btn" class="icon-btn" title="Settings & history" aria-label="Settings">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Universal file URL downloader -->
+    <section class="url-bar">
+      <input id="url-input" class="url-input" type="text" placeholder="Paste any video or file URL…" />
+      <button id="url-download-btn" class="url-btn" title="Download this URL" aria-label="Download">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M5 21h14"/>
+        </svg>
+      </button>
+    </section>
+
+    <main class="app__body">
+      <section id="video-list" class="video-list" aria-live="polite">
+        <div class="skeleton-list">
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+        </div>
+      </section>
+
+      <section id="format-panel" class="format-panel" hidden>
+        <div class="format-panel__head">
+          <button id="back-btn" class="icon-btn icon-btn--sm" aria-label="Back">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <div class="format-panel__title">
+            <h2 id="fmt-title">Choose format</h2>
+            <span id="fmt-sub" class="app__status"></span>
+          </div>
+        </div>
+        <div id="format-list" class="format-list"></div>
+        <div class="format-panel__row">
+          <label for="filename-input" class="field-label">Filename</label>
+          <input id="filename-input" class="text-input" type="text" placeholder="custom_name.mp4" />
+        </div>
+        <div class="format-panel__actions">
+          <button id="download-btn" class="btn btn--primary" disabled><span>Download</span></button>
+          <button id="extract-btn" class="btn btn--ghost" hidden>Extract formats</button>
+          <button id="helper-btn" class="btn btn--ghost" hidden>Open in helper</button>
+        </div>
+      </section>
+
+      <section id="empty" class="empty" hidden>
+        <div class="empty__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg>
+        </div>
+        <h2>No videos detected</h2>
+        <p>This page has no direct video elements. Paste a URL above, or use the helper for platform videos.</p>
+        <button id="rescan-btn" class="btn btn--ghost">Rescan page</button>
+      </section>
+    </main>
+
+    <footer class="app__footer">
+      <span class="hint">Tip: paste any URL above for 1-click download, or right-click on a page.</span>
+      <div class="credit">Powered By: <span class="credit__name">AriyaN Islam Raj</span></div>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="lib/gradient-animator.js"></script>
+  <script src="lib/extractor.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
